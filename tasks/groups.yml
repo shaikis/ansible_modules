@@ -1,0 +1,13 @@
+---
+
+- name: create dba groups here
+  group:
+    name: "{{ item.name }}"
+    gid: "{{ item.gid }}"
+    state: present
+  become: true
+  with_items: 
+    - { name: 'dba', gid: '2001' }
+    - { name: 'asmadmin', gid: '2002' }
+    - { name: 'ansible', gid: '2003' }
+    - { name: 'asmca', gid: '2004' }

@@ -1,25 +1,32 @@
 ---
-- name: create dba groups here
-  group:
-    name: dba
-    gid: 2000
-    state: present
-  become: true
-- name: create user 'group' here
+- name: include variables
+  include_vars:
+    file: "/vagrant/ansible_modules/vars/variables.yml"
+    name: stuff
+  run_once: yes
+  changed_when: no
+
+- name: create user 'users' here
   user:
-    name: oracle
-    uid: 1011
-    group: dba
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    group: "{{ item.group }}"
   become: true
+  with_items: 
+    - { name: 'oracle', uid: '1004', group: 'dba', shell: '/bin/bash', comment: 'database administrator' }
+    - { name: 'asmdba', uid: '1002', group: 'asmca', shell: '/bin/bash', comment: 'database administrator' }
+   
+
 
 - name: copy file
   template:
     src: test.sh.j2
     dest: /tmp/test.sh
     owner: oracle
-    group: dba
+    group: "{{ stuff.file_groups }}"
     mode: '0664'
   become: yes
+
 
 - name: execute shell script
   command: sh /tmp/test.sh
