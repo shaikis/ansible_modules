@@ -1,0 +1,8 @@
+galaxy_info:
+  author: Ismail Shaik
+  description: Develop DB grid Role
+  license: none
+  min_ansible_version: 1.3
+  galaxy_tags: []
+
+dependencies:

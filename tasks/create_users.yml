@@ -1,0 +1,28 @@
+---
+- name: create dba groups here
+  group:
+    name: dba
+    gid: 2000
+    state: present
+  become: true
+- name: create user 'group' here
+  user:
+    name: oracle
+    uid: 1011
+    group: dba
+  become: true
+
+- name: copy file
+  template:
+    src: test.sh.j2
+    dest: /tmp/test.sh
+    owner: oracle
+    group: dba
+    mode: '0664'
+  become: yes
+
+- name: execute shell script
+  command: sh /tmp/test.sh
+  become: yes
+
+    
